@@ -124,10 +124,16 @@ try {
         ],
     ]);
 
-} catch (PDOException $e) {
-    sendResponse(500, false, 'Internal server error');
-} catch (RuntimeException $e) {
-    sendResponse(500, false, $e->getMessage());
-} catch (Exception $e) {
-    sendResponse(500, false, 'Internal server error');
+} catch (Throwable $e) {
+    error_log('[Wellbroker API Error] ' . get_class($e) . ': ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+
+    $message = 'Internal server error';
+
+    if ($e instanceof PDOException) {
+        $message = 'Database connection failed. Please try again later.';
+    } elseif ($e instanceof RuntimeException) {
+        $message = $e->getMessage();
+    }
+
+    sendResponse(500, false, $message);
 }
