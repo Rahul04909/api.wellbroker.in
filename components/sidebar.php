@@ -13,6 +13,8 @@
         <div class="sidebar-section">
             <h3 class="sidebar-heading">Endpoints</h3>
             <ul class="sidebar-links">
+                <li><a href="#user-register" class="sidebar-link" data-section="user-register">User Registration</a></li>
+                <li><a href="#user-login" class="sidebar-link" data-section="user-login">User Login</a></li>
                 <li><a href="#admin-login" class="sidebar-link" data-section="admin-login">Admin Login</a></li>
             </ul>
         </div>
@@ -20,7 +22,9 @@
             <h3 class="sidebar-heading">Testing</h3>
             <ul class="sidebar-links">
                 <li><a href="#postman-setup" class="sidebar-link" data-section="postman-setup">Postman Setup</a></li>
-                <li><a href="#postman-login" class="sidebar-link" data-section="postman-login">Testing Admin Login</a></li>
+                <li><a href="#postman-register" class="sidebar-link" data-section="postman-register">Testing Registration</a></li>
+                <li><a href="#postman-login" class="sidebar-link" data-section="postman-login">Testing User Login</a></li>
+                <li><a href="#postman-admin-login" class="sidebar-link" data-section="postman-admin-login">Testing Admin Login</a></li>
             </ul>
         </div>
         <div class="sidebar-section">

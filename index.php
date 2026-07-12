@@ -696,6 +696,403 @@
 
         <div class="divider"></div>
 
+        <!-- ====== USER REGISTRATION ====== -->
+        <section class="section" id="user-register">
+            <span class="section-badge badge-green">AUTHENTICATION</span>
+            <h2 class="section-subtitle">User Registration</h2>
+            <p class="section-desc">
+                Register a new user account on the Wellbroker platform. This endpoint accepts all common profile fields
+                plus category-specific fields based on the selected profession. Supports file uploads for profile photo,
+                logo, and portfolio images.
+            </p>
+
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method method-post">POST</span>
+                    <span class="endpoint-path">/api/register.php</span>
+                    <span class="endpoint-desc">Create a new user account</span>
+                </div>
+                <div class="endpoint-body">
+
+                    <div class="callout callout-info">
+                        <span class="callout-icon">&#9432;</span>
+                        <div class="callout-text">
+                            <strong>Content-Type:</strong> Use <span class="inline-code">multipart/form-data</span> when uploading files,
+                            or <span class="inline-code">application/json</span> for JSON-only requests.
+                        </div>
+                    </div>
+
+                    <div class="endpoint-subtitle">Common Fields (All Categories)</div>
+                    <div class="table-wrap">
+                        <table class="param-table">
+                            <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="param-name">full_name</span></td><td><span class="param-type">string</span></td><td><span class="param-req required">Required</span><span class="param-desc">Full name of the user</span></td></tr>
+                                <tr><td><span class="param-name">company_name</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Company or firm name</span></td></tr>
+                                <tr><td><span class="param-name">mobile</span></td><td><span class="param-type">string</span></td><td><span class="param-req required">Required</span><span class="param-desc">10-digit Indian mobile number (starts with 6-9)</span></td></tr>
+                                <tr><td><span class="param-name">email</span></td><td><span class="param-type">string</span></td><td><span class="param-req required">Required</span><span class="param-desc">Valid email address (must have valid domain)</span></td></tr>
+                                <tr><td><span class="param-name">password</span></td><td><span class="param-type">string</span></td><td><span class="param-req required">Required</span><span class="param-desc">Min 8 chars, uppercase, lowercase, digit, special char</span></td></tr>
+                                <tr><td><span class="param-name">state</span></td><td><span class="param-type">string</span></td><td><span class="param-req required">Required</span><span class="param-desc">State name</span></td></tr>
+                                <tr><td><span class="param-name">city</span></td><td><span class="param-type">string</span></td><td><span class="param-req required">Required</span><span class="param-desc">City name</span></td></tr>
+                                <tr><td><span class="param-name">address</span></td><td><span class="param-type">string</span></td><td><span class="param-req required">Required</span><span class="param-desc">Full address</span></td></tr>
+                                <tr><td><span class="param-name">pincode</span></td><td><span class="param-type">string</span></td><td><span class="param-req required">Required</span><span class="param-desc">6-digit pincode</span></td></tr>
+                                <tr><td><span class="param-name">category</span></td><td><span class="param-type">string</span></td><td><span class="param-req required">Required</span><span class="param-desc">See category list below</span></td></tr>
+                                <tr><td><span class="param-name">sub_category</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Sub-category within the selected category</span></td></tr>
+                                <tr><td><span class="param-name">experience</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Years/months of experience</span></td></tr>
+                                <tr><td><span class="param-name">about_business</span></td><td><span class="param-type">text</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Brief description about business</span></td></tr>
+                                <tr><td><span class="param-name">service_areas</span></td><td><span class="param-type">json</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Array of service areas served: <span class="inline-code">["Area1","Area2"]</span></span></td></tr>
+                                <tr><td><span class="param-name">website</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Website URL</span></td></tr>
+                                <tr><td><span class="param-name">whatsapp_number</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">WhatsApp contact number</span></td></tr>
+                                <tr><td><span class="param-name">profile_photo</span></td><td><span class="param-type">file</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Profile photo (JPEG, PNG, GIF, WEBP; max 5MB)</span></td></tr>
+                                <tr><td><span class="param-name">logo</span></td><td><span class="param-type">file</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Company logo (JPEG, PNG, GIF, WEBP; max 5MB)</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="endpoint-subtitle" style="margin-top:24px">Categories</div>
+                    <div class="table-wrap">
+                        <table class="param-table">
+                            <thead><tr><th>Value</th><th>Label</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="param-name">agent_broker</span></td><td><span class="param-desc">Agents / Brokers</span></td></tr>
+                                <tr><td><span class="param-name">builder_developer</span></td><td><span class="param-desc">Builders / Developers</span></td></tr>
+                                <tr><td><span class="param-name">architect</span></td><td><span class="param-desc">Architects</span></td></tr>
+                                <tr><td><span class="param-name">interior_decorator</span></td><td><span class="param-desc">Interior Decorators</span></td></tr>
+                                <tr><td><span class="param-name">building_contractor</span></td><td><span class="param-desc">Building Contractors</span></td></tr>
+                                <tr><td><span class="param-name">vaastu_consultant</span></td><td><span class="param-desc">Vaastu Consultants</span></td></tr>
+                                <tr><td><span class="param-name">home_inspection</span></td><td><span class="param-desc">Home Inspection</span></td></tr>
+                                <tr><td><span class="param-name">property_consultant</span></td><td><span class="param-desc">Property Consultants</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="endpoint-subtitle" style="margin-top:24px">Category-Specific Fields</div>
+
+                    <div class="card" style="margin-bottom:12px">
+                        <div class="card-title">&#127968; Agents / Brokers</div>
+                        <div class="table-wrap">
+                            <table class="param-table">
+                                <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">rera_number</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">RERA registration number</span></td></tr>
+                                    <tr><td><span class="param-name">property_types</span></td><td><span class="param-type">json</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Array of property types: <span class="inline-code">["Residential","Commercial"]</span></span></td></tr>
+                                    <tr><td><span class="param-name">buy_sell_rent</span></td><td><span class="param-type">json</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Services offered: <span class="inline-code">["Buy","Sell","Rent"]</span></span></td></tr>
+                                    <tr><td><span class="param-name">years_of_experience</span></td><td><span class="param-type">number</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Years of experience in real estate</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:12px">
+                        <div class="card-title">&#127970; Builders / Developers</div>
+                        <div class="table-wrap">
+                            <table class="param-table">
+                                <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">rera_registration</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">RERA registration number</span></td></tr>
+                                    <tr><td><span class="param-name">company_registration_no</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Company incorporation / registration number</span></td></tr>
+                                    <tr><td><span class="param-name">total_projects</span></td><td><span class="param-type">number</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Total number of projects undertaken</span></td></tr>
+                                    <tr><td><span class="param-name">ongoing_projects</span></td><td><span class="param-type">number</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Number of ongoing projects</span></td></tr>
+                                    <tr><td><span class="param-name">completed_projects</span></td><td><span class="param-type">number</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Number of completed projects</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:12px">
+                        <div class="card-title">&#128393; Architects</div>
+                        <div class="table-wrap">
+                            <table class="param-table">
+                                <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">coa_registration_number</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Council of Architecture registration number</span></td></tr>
+                                    <tr><td><span class="param-name">qualification</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Educational qualification details</span></td></tr>
+                                    <tr><td><span class="param-name">design_style</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Architectural design style specialisation</span></td></tr>
+                                    <tr><td><span class="param-name">portfolio</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">URL or description of portfolio work</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:12px">
+                        <div class="card-title">&#127912; Interior Decorators</div>
+                        <div class="table-wrap">
+                            <table class="param-table">
+                                <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">specialization</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Area of specialisation (residential, commercial, etc.)</span></td></tr>
+                                    <tr><td><span class="param-name">portfolio_images</span></td><td><span class="param-type">file[]</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Multiple portfolio images (use <span class="inline-code">portfolio_images[]</span> in form-data)</span></td></tr>
+                                    <tr><td><span class="param-name">design_style</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Preferred design style (modern, traditional, etc.)</span></td></tr>
+                                    <tr><td><span class="param-name">minimum_project_budget</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Minimum budget for projects (e.g. "5 Lakhs")</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:12px">
+                        <div class="card-title">&#128119; Building Contractors</div>
+                        <div class="table-wrap">
+                            <table class="param-table">
+                                <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">contractor_license</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Contractor license or registration number</span></td></tr>
+                                    <tr><td><span class="param-name">team_size</span></td><td><span class="param-type">number</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Size of the construction team</span></td></tr>
+                                    <tr><td><span class="param-name">services_offered</span></td><td><span class="param-type">json</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Array of services: <span class="inline-code">["Residential","Commercial","Renovation"]</span></span></td></tr>
+                                    <tr><td><span class="param-name">minimum_project_value</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Minimum project value accepted</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:12px">
+                        <div class="card-title">&#128302; Vaastu Consultants</div>
+                        <div class="table-wrap">
+                            <table class="param-table">
+                                <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">certification</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Vaastu certification details</span></td></tr>
+                                    <tr><td><span class="param-name">consultation_type</span></td><td><span class="param-type">json</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Consultation modes: <span class="inline-code">["Online","Offline"]</span></span></td></tr>
+                                    <tr><td><span class="param-name">languages</span></td><td><span class="param-type">json</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Languages spoken: <span class="inline-code">["Hindi","English","Marathi"]</span></span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:12px">
+                        <div class="card-title">&#128269; Home Inspection</div>
+                        <div class="table-wrap">
+                            <table class="param-table">
+                                <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">inspection_types</span></td><td><span class="param-type">json</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Inspection services: <span class="inline-code">["Structural","Electrical","Plumbing"]</span></span></td></tr>
+                                    <tr><td><span class="param-name">certifications</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Professional certifications held</span></td></tr>
+                                    <tr><td><span class="param-name">equipment_details</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Details of inspection equipment used</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:12px">
+                        <div class="card-title">&#128188; Property Consultants</div>
+                        <div class="table-wrap">
+                            <table class="param-table">
+                                <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="param-name">specialization</span></td><td><span class="param-type">string</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Area of property consulting specialisation</span></td></tr>
+                                    <tr><td><span class="param-name">commercial_residential</span></td><td><span class="param-type">json</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Sectors served: <span class="inline-code">["Commercial","Residential"]</span></span></td></tr>
+                                    <tr><td><span class="param-name">investment_consulting</span></td><td><span class="param-type">boolean</span></td><td><span class="param-req optional">Optional</span><span class="param-desc">Whether investment consulting is offered</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="endpoint-subtitle" style="margin-top:24px">Example Request (JSON)</div>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        curl -X POST https://api.wellbroker.in/api/register.php \<br>
+                        &nbsp;&nbsp;-H <span class="s">"Content-Type: application/json"</span> \<br>
+                        &nbsp;&nbsp;-d <span class="s">'{</span><br>
+                        &nbsp;&nbsp;<span class="s">  "full_name": "Rajesh Sharma",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "company_name": "Sharma Properties",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "mobile": "9876543210",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "email": "rajesh@example.com",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "password": "Secure@123",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "state": "Maharashtra",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "city": "Mumbai",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "address": "42, Marine Drive, South Mumbai",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "pincode": "400001",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "category": "agent_broker",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "experience": "8 years",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "rera_number": "MH/RERA/12345/2024",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "property_types": "[\"Residential\",\"Commercial\"]",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "buy_sell_rent": "[\"Buy\",\"Sell\",\"Rent\"]",</span><br>
+                        &nbsp;&nbsp;<span class="s">  "years_of_experience": "8"</span><br>
+                        &nbsp;&nbsp;<span class="s">}'</span>
+                    </div>
+
+                    <div class="endpoint-subtitle" style="margin-top:24px">Example Request (Multipart with Files)</div>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        curl -X POST https://api.wellbroker.in/api/register.php \<br>
+                        &nbsp;&nbsp;-F <span class="s">"full_name=Rajesh Sharma"</span> \<br>
+                        &nbsp;&nbsp;-F <span class="s">"email=rajesh@example.com"</span> \<br>
+                        &nbsp;&nbsp;-F <span class="s">"mobile=9876543210"</span> \<br>
+                        &nbsp;&nbsp;-F <span class="s">"password=Secure@123"</span> \<br>
+                        &nbsp;&nbsp;-F <span class="s">"category=agent_broker"</span> \<br>
+                        &nbsp;&nbsp;-F <span class="s">"profile_photo=@/path/to/photo.jpg"</span> \<br>
+                        &nbsp;&nbsp;-F <span class="s">"logo=@/path/to/logo.png"</span>
+                    </div>
+
+                    <div class="endpoint-subtitle" style="margin-top:24px">Success Response &mdash; <span class="status-code s2xx">201 Created</span></div>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        {<br>
+                        &nbsp;&nbsp;<span class="s">"status"</span>: <span class="k">true</span>,<br>
+                        &nbsp;&nbsp;<span class="s">"message"</span>: <span class="s">"Registration successful"</span>,<br>
+                        &nbsp;&nbsp;<span class="s">"data"</span>: {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"token"</span>: <span class="s">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"token_type"</span>: <span class="s">"Bearer"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"expires_in"</span>: <span class="n">3600</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"refresh_token"</span>: <span class="s">"a1b2c3d4e5f6..."</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"user"</span>: {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"id"</span>: <span class="n">1</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"full_name"</span>: <span class="s">"Rajesh Sharma"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"email"</span>: <span class="s">"rajesh@example.com"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"category"</span>: <span class="s">"agent_broker"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"category_label"</span>: <span class="s">"Agents / Brokers"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"profile_photo"</span>: <span class="s">"https://api.wellbroker.in/uploads/profiles/abc.jpg"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"created_at"</span>: <span class="s">"2026-07-12 21:30:00"</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;}<br>
+                        }
+                    </div>
+
+                    <div class="endpoint-subtitle" style="margin-top:24px">Error Responses</div>
+                    <div class="grid-2">
+                        <div class="code-block" style="margin:0">
+                            <span class="c">// 422 &mdash; Validation errors</span><br>
+                            {<br>
+                            &nbsp;&nbsp;<span class="s">"status"</span>: <span class="k">false</span>,<br>
+                            &nbsp;&nbsp;<span class="s">"message"</span>: <span class="s">"Validation failed"</span>,<br>
+                            &nbsp;&nbsp;<span class="s">"data"</span>: {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"errors"</span>: [<span class="s">"Full name is required"</span>, <span class="s">"Email is required"</span>]<br>
+                            &nbsp;&nbsp;}<br>
+                            }
+                        </div>
+                        <div class="code-block" style="margin:0">
+                            <span class="c">// 409 &mdash; Duplicate</span><br>
+                            {<br>
+                            &nbsp;&nbsp;<span class="s">"status"</span>: <span class="k">false</span>,<br>
+                            &nbsp;&nbsp;<span class="s">"message"</span>: <span class="s">"An account with this email already exists"</span>,<br>
+                            &nbsp;&nbsp;<span class="s">"data"</span>: {}<br>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ====== USER LOGIN ====== -->
+        <section class="section" id="user-login">
+            <span class="section-badge badge-green">AUTHENTICATION</span>
+            <h2 class="section-subtitle">User Login</h2>
+            <p class="section-desc">
+                Authenticate as a registered user. Accepts <strong>email</strong> or <strong>mobile number</strong>.
+                On success you receive a JWT access token, refresh token, and the complete user profile.
+            </p>
+
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method method-post">POST</span>
+                    <span class="endpoint-path">/api/login.php</span>
+                    <span class="endpoint-desc">Authenticate a registered user</span>
+                </div>
+                <div class="endpoint-body">
+
+                    <div class="endpoint-subtitle">Request Body</div>
+                    <div class="table-wrap">
+                        <table class="param-table">
+                            <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="param-name">email</span></td>
+                                    <td><span class="param-type">string</span></td>
+                                    <td>
+                                        <span class="param-req required">Required</span>
+                                        <span class="param-desc">Registered email <strong>or</strong> mobile number. The API auto-detects which.</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="param-name">password</span></td>
+                                    <td><span class="param-type">string</span></td>
+                                    <td>
+                                        <span class="param-req required">Required</span>
+                                        <span class="param-desc">Account password</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout callout-tip">
+                        <span class="callout-icon">&#9889;</span>
+                        <div class="callout-text">
+                            <strong>Login via email or mobile.</strong> Send either value in the <span class="inline-code">email</span> field.
+                            If the value is a valid email, the API looks up by email; otherwise by mobile number.
+                        </div>
+                    </div>
+
+                    <div class="endpoint-subtitle" style="margin-top:24px">User Profile Fields</div>
+                    <div class="table-wrap">
+                        <table class="param-table">
+                            <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="param-name">id</span></td><td><span class="param-type">integer</span></td><td><span class="param-desc">Unique user identifier</span></td></tr>
+                                <tr><td><span class="param-name">full_name</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Full name</span></td></tr>
+                                <tr><td><span class="param-name">company_name</span></td><td><span class="param-type">string|null</span></td><td><span class="param-desc">Company or firm name</span></td></tr>
+                                <tr><td><span class="param-name">email</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Email address</span></td></tr>
+                                <tr><td><span class="param-name">mobile</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Mobile number</span></td></tr>
+                                <tr><td><span class="param-name">category</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">User category slug</span></td></tr>
+                                <tr><td><span class="param-name">category_label</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Human-readable category name</span></td></tr>
+                                <tr><td><span class="param-name">profile_photo</span></td><td><span class="param-type">string|null</span></td><td><span class="param-desc">Profile photo URL</span></td></tr>
+                                <tr><td><span class="param-name">logo</span></td><td><span class="param-type">string|null</span></td><td><span class="param-desc">Company logo URL</span></td></tr>
+                                <tr><td><span class="param-name">extra_fields</span></td><td><span class="param-type">object|null</span></td><td><span class="param-desc">Category-specific fields as JSON object</span></td></tr>
+                                <tr><td><span class="param-name">email_verified</span></td><td><span class="param-type">boolean</span></td><td><span class="param-desc">Email verification status</span></td></tr>
+                                <tr><td><span class="param-name">mobile_verified</span></td><td><span class="param-type">boolean</span></td><td><span class="param-desc">Mobile verification status</span></td></tr>
+                                <tr><td><span class="param-name">created_at</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Account creation timestamp</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="endpoint-subtitle" style="margin-top:24px">Example Requests</div>
+
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <span class="c"># Login by email</span><br>
+                        curl -X POST https://api.wellbroker.in/api/login.php \<br>
+                        &nbsp;&nbsp;-H <span class="s">"Content-Type: application/json"</span> \<br>
+                        &nbsp;&nbsp;-d <span class="s">'{"email": "rajesh@example.com", "password": "Secure@123"}'</span>
+                    </div>
+
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <span class="c"># Login by mobile number</span><br>
+                        curl -X POST https://api.wellbroker.in/api/login.php \<br>
+                        &nbsp;&nbsp;-H <span class="s">"Content-Type: application/json"</span> \<br>
+                        &nbsp;&nbsp;-d <span class="s">'{"email": "9876543210", "password": "Secure@123"}'</span>
+                    </div>
+
+                    <div class="endpoint-subtitle" style="margin-top:24px">Success Response &mdash; <span class="status-code s2xx">200 OK</span></div>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        {<br>
+                        &nbsp;&nbsp;<span class="s">"status"</span>: <span class="k">true</span>,<br>
+                        &nbsp;&nbsp;<span class="s">"message"</span>: <span class="s">"Login successful"</span>,<br>
+                        &nbsp;&nbsp;<span class="s">"data"</span>: {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"token"</span>: <span class="s">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"token_type"</span>: <span class="s">"Bearer"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"expires_in"</span>: <span class="n">3600</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"refresh_token"</span>: <span class="s">"a1b2c3d4e5f6..."</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"user"</span>: {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"id"</span>: <span class="n">1</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"full_name"</span>: <span class="s">"Rajesh Sharma"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"email"</span>: <span class="s">"rajesh@example.com"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"mobile"</span>: <span class="s">"9876543210"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"category"</span>: <span class="s">"agent_broker"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"profile_photo"</span>: <span class="s">"https://api.wellbroker.in/uploads/profiles/abc.jpg"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"created_at"</span>: <span class="s">"2026-07-12 21:30:00"</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;}<br>
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
         <!-- ====== POSTMAN TESTING GUIDE ====== -->
         <section class="section" id="postman-setup">
             <span class="section-badge badge-accent">TESTING</span>
@@ -709,9 +1106,10 @@
             <div class="callout callout-warning">
                 <span class="callout-icon">&#9888;</span>
                 <div class="callout-text">
-                    <strong>Prerequisites:</strong> Make sure the API server is running and the database is seeded with the
-                    admin user from <span class="inline-code">sql/admins.sql</span>. The default password hash is for
-                    <strong>"password"</strong> (you should change this in production).
+                    <strong>Prerequisites:</strong> Make sure the API server is running and the database is seeded.
+                    Import <span class="inline-code">sql/admins.sql</span> for the admin user and
+                    <span class="inline-code">sql/users.sql</span> for the user registration table.
+                    The default admin password hash is for <strong>"password"</strong> (change in production).
                 </div>
             </div>
 
@@ -744,7 +1142,244 @@
             </div>
         </section>
 
+        <section class="section" id="postman-register">
+            <span class="section-badge badge-green">STEP-BY-STEP</span>
+            <h2 class="section-subtitle">Testing: User Registration</h2>
+            <p class="section-desc">
+                Follow these steps to test the User Registration endpoint in Postman.
+                This endpoint uses <strong>multipart/form-data</strong> for file uploads.
+            </p>
+
+            <div class="card">
+                <div class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                    Quick Reference
+                </div>
+                <div class="table-wrap">
+                    <table class="param-table">
+                        <thead><tr><th>Item</th><th>Value</th></tr></thead>
+                        <tbody>
+                            <tr><td><span class="param-name">Method</span></td><td><span class="param-type">POST</span></td></tr>
+                            <tr><td><span class="param-name">URL</span></td><td><span class="param-type">{{base_url}}/api/register.php</span></td></tr>
+                            <tr><td><span class="param-name">Headers</span></td><td><span class="param-type">No Content-Type (auto-set for multipart)</span></td></tr>
+                            <tr><td><span class="param-name">Auth</span></td><td><span class="param-type">None (public endpoint)</span></td></tr>
+                            <tr><td><span class="param-name">Body Type</span></td><td><span class="param-type">form-data</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <div class="step-title">Create a new request</div>
+                    <div class="step-text">In the <strong>Wellbroker API</strong> collection, click <strong>Add a request</strong>. Name it <span class="inline-code">User Registration</span>.</div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <div class="step-title">Set method and URL</div>
+                    <div class="step-text">Set method to <strong>POST</strong> and URL to <span class="inline-code">{{base_url}}/api/register.php</span>.</div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <div class="step-title">Set up form-data body</div>
+                    <div class="step-text">Go to the <strong>Body</strong> tab, select <strong>form-data</strong>, and add the following fields:</div>
+                    <div class="img-placeholder" style="margin-top:10px">
+                        <div class="screen">
+                            <span class="dim">Key-Value pairs in form-data</span><br><br>
+                            <span class="hl">full_name</span>: <span class="gr">Rajesh Sharma</span> &nbsp;<span class="dim">(text)</span><br>
+                            <span class="hl">email</span>: <span class="gr">rajesh@example.com</span> &nbsp;<span class="dim">(text)</span><br>
+                            <span class="hl">mobile</span>: <span class="gr">9876543210</span> &nbsp;<span class="dim">(text)</span><br>
+                            <span class="hl">password</span>: <span class="gr">Secure@123</span> &nbsp;<span class="dim">(text)</span><br>
+                            <span class="hl">state</span>: <span class="gr">Maharashtra</span> &nbsp;<span class="dim">(text)</span><br>
+                            <span class="hl">city</span>: <span class="gr">Mumbai</span> &nbsp;<span class="dim">(text)</span><br>
+                            <span class="hl">address</span>: <span class="gr">42, Marine Drive</span> &nbsp;<span class="dim">(text)</span><br>
+                            <span class="hl">pincode</span>: <span class="gr">400001</span> &nbsp;<span class="dim">(text)</span><br>
+                            <span class="hl">category</span>: <span class="gr">agent_broker</span> &nbsp;<span class="dim">(text)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                    <div class="step-title">Add category-specific fields</div>
+                    <div class="step-text">
+                        For <strong>agent_broker</strong> category, add these additional form-data fields:<br>
+                        <span class="inline-code">rera_number</span>: <span class="inline-code">MH/RERA/12345</span><br>
+                        <span class="inline-code">property_types</span>: <span class="inline-code">["Residential","Commercial"]</span> (JSON string)<br>
+                        <span class="inline-code">years_of_experience</span>: <span class="inline-code">8</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">5</div>
+                <div class="step-body">
+                    <div class="step-title">Upload files (optional)</div>
+                    <div class="step-text">
+                        Change the key type from <strong>Text</strong> to <strong>File</strong> for these fields:<br>
+                        <span class="inline-code">profile_photo</span> &rarr; select a JPEG/PNG file<br>
+                        <span class="inline-code">logo</span> &rarr; select a company logo image
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">6</div>
+                <div class="step-body">
+                    <div class="step-title">Send and verify</div>
+                    <div class="step-text">
+                        Click <strong>Send</strong>. Expect a <span class="status-code s2xx">201 Created</span> response with:
+                        <ul style="margin-top:4px">
+                            <li><span class="inline-code">status: true</span></li>
+                            <li>A JWT <span class="inline-code">token</span> for immediate use</li>
+                            <li>A <span class="inline-code">user</span> object with profile data</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">7</div>
+                <div class="step-body">
+                    <div class="step-title">Test error scenarios</div>
+                    <div class="step-text">
+                        <ul>
+                            <li><strong>Missing required fields:</strong> Send only <span class="inline-code">full_name</span> &rarr; expect <span class="status-code s4xx">422</span> with validation errors array</li>
+                            <li><strong>Duplicate email:</strong> Register again with same email &rarr; expect <span class="status-code s4xx">409</span></li>
+                            <li><strong>Weak password:</strong> Use <span class="inline-code">"password": "123"</span> &rarr; expect <span class="status-code s4xx">422</span></li>
+                            <li><strong>Invalid mobile:</strong> Use <span class="inline-code">"mobile": "12345"</span> &rarr; expect <span class="status-code s4xx">422</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout callout-success" style="margin-top:24px">
+                <span class="callout-icon">&#10003;</span>
+                <div class="callout-text">
+                    <strong>Pro tip:</strong> After registration, the JWT token is returned immediately. Use the Postman
+                    <strong>Tests</strong> tab to auto-save it to <span class="inline-code">{{auth_token}}</span> using
+                    the same script shown in the Admin Login section.
+                </div>
+            </div>
+        </section>
+
         <section class="section" id="postman-login">
+            <span class="section-badge badge-green">STEP-BY-STEP</span>
+            <h2 class="section-subtitle">Testing: User Login</h2>
+            <p class="section-desc">
+                Follow these steps to test the User Login endpoint. Login is available via email or mobile number.
+            </p>
+
+            <div class="card">
+                <div class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                    Quick Reference
+                </div>
+                <div class="table-wrap">
+                    <table class="param-table">
+                        <thead><tr><th>Item</th><th>Value</th></tr></thead>
+                        <tbody>
+                            <tr><td><span class="param-name">Method</span></td><td><span class="param-type">POST</span></td></tr>
+                            <tr><td><span class="param-name">URL</span></td><td><span class="param-type">{{base_url}}/api/login.php</span></td></tr>
+                            <tr><td><span class="param-name">Headers</span></td><td><span class="param-type">Content-Type: application/json</span></td></tr>
+                            <tr><td><span class="param-name">Auth</span></td><td><span class="param-type">None (public endpoint)</span></td></tr>
+                            <tr><td><span class="param-name">Body Type</span></td><td><span class="param-type">raw (JSON)</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <div class="step-title">Create a new request</div>
+                    <div class="step-text">In the <strong>Wellbroker API</strong> collection, add a request named <span class="inline-code">User Login</span>.</div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <div class="step-title">Set method, URL, and headers</div>
+                    <div class="step-text">
+                        Set method to <strong>POST</strong>, URL to <span class="inline-code">{{base_url}}/api/login.php</span>,
+                        and add header <span class="inline-code">Content-Type: application/json</span>.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <div class="step-title">Prepare the request body</div>
+                    <div class="step-text">Go to <strong>Body</strong> &rarr; <strong>raw</strong> &rarr; <strong>JSON</strong> and paste:</div>
+                    <div class="code-block" style="margin-top:10px">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        {<br>
+                        &nbsp;&nbsp;<span class="s">"email"</span>: <span class="s">"rajesh@example.com"</span>,<br>
+                        &nbsp;&nbsp;<span class="s">"password"</span>: <span class="s">"Secure@123"</span><br>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                    <div class="step-title">Test login by mobile</div>
+                    <div class="step-text">Change the <span class="inline-code">email</span> value to the registered mobile number:<br>
+                    <span class="inline-code">"email": "9876543210"</span></div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">5</div>
+                <div class="step-body">
+                    <div class="step-title">Send and verify</div>
+                    <div class="step-text">
+                        Click <strong>Send</strong>. Expect a <span class="status-code s2xx">200 OK</span> response with:
+                        <ul style="margin-top:4px">
+                            <li><span class="inline-code">status: true</span></li>
+                            <li>A JWT <span class="inline-code">token</span></li>
+                            <li>Complete <span class="inline-code">user</span> profile including <span class="inline-code">extra_fields</span> with category-specific data</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">6</div>
+                <div class="step-body">
+                    <div class="step-title">Test error scenarios</div>
+                    <div class="step-text">
+                        <ul>
+                            <li><strong>Wrong password:</strong> Send wrong password &rarr; expect <span class="status-code s4xx">401</span></li>
+                            <li><strong>Unregistered email:</strong> Send unregistered email &rarr; expect <span class="status-code s4xx">401</span></li>
+                            <li><strong>Missing fields:</strong> Send empty body &rarr; expect <span class="status-code s4xx">400</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout callout-success" style="margin-top:24px">
+                <span class="callout-icon">&#10003;</span>
+                <div class="callout-text">
+                    <strong>Auto-save token:</strong> Use the same Postman test script from the Admin Login section to
+                    automatically save the token to <span class="inline-code">{{auth_token}}</span>.
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="postman-admin-login">
             <span class="section-badge badge-green">STEP-BY-STEP</span>
             <h2 class="section-subtitle">Testing: Admin Login</h2>
             <p class="section-desc">
@@ -960,12 +1595,31 @@
                         <tbody>
                             <tr>
                                 <td><span class="method method-post">POST</span></td>
+                                <td><span class="param-name">/api/register.php</span></td>
+                                <td><span class="tag">None</span></td>
+                                <td><span class="param-desc">User registration &mdash; create account + return JWT</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method method-post">POST</span></td>
+                                <td><span class="param-name">/api/login.php</span></td>
+                                <td><span class="tag">None</span></td>
+                                <td><span class="param-desc">User login &mdash; email or mobile + password &rarr; JWT</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="method method-post">POST</span></td>
                                 <td><span class="param-name">/admin/index.php</span></td>
                                 <td><span class="tag">None</span></td>
-                                <td><span class="param-desc">Admin login &mdash; returns JWT token + admin profile</span></td>
+                                <td><span class="param-desc">Admin login &mdash; email or username + password &rarr; JWT</span></td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="callout callout-tip" style="margin-top:16px">
+                <span class="callout-icon">&#9432;</span>
+                <div class="callout-text">
+                    <strong>Total: 3 endpoints.</strong> All public endpoints return a consistent JSON envelope.
+                    Protected endpoints (future) will require <span class="inline-code">Authorization: Bearer &lt;token&gt;</span>.
                 </div>
             </div>
         </section>
