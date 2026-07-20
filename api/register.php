@@ -36,8 +36,7 @@ try {
         sendResponse(405, false, 'Only POST method is allowed');
     }
 
-    // ===== COMMON FIELD VALIDATION =====
-    $requiredFields = ['full_name', 'mobile', 'email', 'password', 'state', 'city', 'address', 'pincode', 'category'];
+    $requiredFields = ['name', 'email', 'mobile', 'password', 'state', 'city', 'locality', 'whatsapp_number', 'category'];
     $errors = [];
 
     foreach ($requiredFields as $field) {
@@ -52,29 +51,25 @@ try {
         sendResponse(422, false, 'Validation failed', ['errors' => $errors]);
     }
 
-    $fullName = trim(getInput('full_name'));
-    $companyName = trim(getInput('company_name', ''));
-    $mobile = trim(getInput('mobile'));
+    $name = trim(getInput('name'));
     $email = trim(getInput('email'));
+    $mobile = trim(getInput('mobile'));
     $password = getInput('password');
     $state = trim(getInput('state'));
     $city = trim(getInput('city'));
-    $address = trim(getInput('address'));
-    $pincode = trim(getInput('pincode'));
-    $category = getInput('category');
+    $locality = trim(getInput('locality'));
+    $whatsappNumber = trim(getInput('whatsapp_number'));
+    $category = trim(getInput('category'));
     $subCategory = trim(getInput('sub_category', ''));
-    $experience = trim(getInput('experience', ''));
-    $aboutBusiness = trim(getInput('about_business', ''));
-    $serviceAreasInput = getInput('service_areas', '');
-    $website = trim(getInput('website', ''));
-    $whatsappNumber = trim(getInput('whatsapp_number', ''));
 
-    // Validate email
+    if (!array_key_exists($category, getCategories())) {
+        sendResponse(422, false, 'Invalid category. Allowed: ' . implode(', ', array_keys(getCategories())));
+    }
+
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         sendResponse(422, false, 'Invalid email format');
     }
 
-    // Validate email domain exists (skip check if DNS functions unavailable on Windows)
     if (function_exists('checkdnsrr')) {
         $domain = substr(strrchr($email, '@'), 1);
         if (!checkdnsrr($domain, 'MX') && !checkdnsrr($domain, 'A')) {
@@ -82,12 +77,10 @@ try {
         }
     }
 
-    // Validate Indian mobile number (10 digits starting with 6-9)
     if (!preg_match('/^[6-9]\d{9}$/', $mobile)) {
         sendResponse(422, false, 'Invalid mobile number. Must be a valid 10-digit Indian mobile number starting with 6-9');
     }
 
-    // Password policy: minimum 8 chars, uppercase, lowercase, digit, special char
     if (strlen($password) < 8) {
         sendResponse(422, false, 'Password must be at least 8 characters long');
     }
@@ -104,145 +97,60 @@ try {
         sendResponse(422, false, 'Password must contain at least one special character');
     }
 
-    // Validate category
-    $validCategories = array_keys(getCategories());
-    if (!in_array($category, $validCategories)) {
-        sendResponse(422, false, 'Invalid category. Must be one of: ' . implode(', ', $validCategories));
-    }
-
-    // Validate pincode
-    if (!preg_match('/^\d{6}$/', $pincode)) {
-        sendResponse(422, false, 'Invalid pincode. Must be a 6-digit number');
-    }
-
-    // Validate website URL if provided
-    if (!empty($website)) {
-        if (!preg_match('/^https?:\/\/.+/', $website)) {
-            $website = 'https://' . $website;
-        }
-        if (!filter_var($website, FILTER_VALIDATE_URL)) {
-            sendResponse(422, false, 'Invalid website URL');
-        }
-    }
-
-    // Validate WhatsApp number if provided
-    if (!empty($whatsappNumber)) {
-        $cleanWhatsApp = preg_replace('/[^0-9]/', '', $whatsappNumber);
-        if (strlen($cleanWhatsApp) < 10 || strlen($cleanWhatsApp) > 15) {
-            sendResponse(422, false, 'Invalid WhatsApp number');
-        }
+    if (!preg_match('/^[6-9]\d{9}$/', $whatsappNumber)) {
+        sendResponse(422, false, 'Invalid WhatsApp number. Must be a valid 10-digit Indian mobile number starting with 6-9');
     }
 
     $pdo = getDbConnection();
 
-    // Check duplicate email
     $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email LIMIT 1");
     $stmt->execute([':email' => $email]);
     if ($stmt->fetch()) {
         sendResponse(409, false, 'An account with this email already exists');
     }
 
-    // Check duplicate mobile
     $stmt = $pdo->prepare("SELECT id FROM users WHERE mobile = :mobile LIMIT 1");
     $stmt->execute([':mobile' => $mobile]);
     if ($stmt->fetch()) {
         sendResponse(409, false, 'An account with this mobile number already exists');
     }
 
-    // ===== FILE UPLOADS =====
-    $allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    $allowedDocTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
-
-    $profilePhoto = handleFileUpload('profile_photo', 'profiles', $allowedImageTypes);
-    $logo = handleFileUpload('logo', 'logos', $allowedImageTypes);
-    $portfolioImages = [];
-
-    // Handle portfolio images for Architects and Interior Decorators
-    if (in_array($category, ['architect', 'interior_decorator'])) {
-        $portfolioImages = handleMultipleFileUpload('portfolio_images', 'portfolios', $allowedImageTypes);
-    }
-
-    // ===== BUILD EXTRA FIELDS (Category-Specific) =====
-    $extraFields = [];
-    $categoryFieldNames = getCategoryFields($category);
-
-    foreach ($categoryFieldNames as $fieldName) {
-        $value = getInput($fieldName);
-
-        if ($value !== null && $value !== '') {
-            // Try to decode JSON strings for array fields
-            $decoded = json_decode($value, true);
-            $extraFields[$fieldName] = ($decoded !== null) ? $decoded : $value;
-        }
-    }
-
-    // Attach portfolio image paths to extra_fields for architects/interior decorators
-    if (!empty($portfolioImages)) {
-        $extraFields['portfolio_images'] = $portfolioImages;
-    }
-
-    // ===== SERVICE AREAS (JSON array) =====
-    $serviceAreasJson = null;
-    if (!empty($serviceAreasInput)) {
-        $decoded = json_decode($serviceAreasInput, true);
-        if ($decoded !== null && is_array($decoded)) {
-            $serviceAreasJson = json_encode($decoded);
-        } else {
-            $serviceAreasJson = json_encode([$serviceAreasInput]);
-        }
-    }
-
-    // ===== HASH PASSWORD (bcrypt, cost 12) =====
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
 
-    // ===== INSERT USER =====
     $stmt = $pdo->prepare(
         "INSERT INTO users (
-            full_name, company_name, mobile, email, password,
-            state, city, address, pincode, category, sub_category,
-            profile_photo, logo, experience, about_business,
-            service_areas, website, whatsapp_number, extra_fields,
+            name, email, mobile, password,
+            state, city, locality, whatsapp_number,
+            category, sub_category,
             status, mobile_verified, email_verified, created_at, updated_at
         ) VALUES (
-            :full_name, :company_name, :mobile, :email, :password,
-            :state, :city, :address, :pincode, :category, :sub_category,
-            :profile_photo, :logo, :experience, :about_business,
-            :service_areas, :website, :whatsapp_number, :extra_fields,
+            :name, :email, :mobile, :password,
+            :state, :city, :locality, :whatsapp_number,
+            :category, :sub_category,
             1, 0, 0, NOW(), NOW()
         )"
     );
 
     $stmt->execute([
-        ':full_name' => $fullName,
-        ':company_name' => $companyName ?: null,
-        ':mobile' => $mobile,
+        ':name' => $name,
         ':email' => $email,
+        ':mobile' => $mobile,
         ':password' => $hashedPassword,
         ':state' => $state,
         ':city' => $city,
-        ':address' => $address,
-        ':pincode' => $pincode,
+        ':locality' => $locality,
+        ':whatsapp_number' => $whatsappNumber,
         ':category' => $category,
         ':sub_category' => $subCategory ?: null,
-        ':profile_photo' => $profilePhoto,
-        ':logo' => $logo,
-        ':experience' => $experience ?: null,
-        ':about_business' => $aboutBusiness ?: null,
-        ':service_areas' => $serviceAreasJson,
-        ':website' => $website ?: null,
-        ':whatsapp_number' => $whatsappNumber ?: null,
-        ':extra_fields' => !empty($extraFields) ? json_encode($extraFields) : null,
     ]);
 
     $userId = (int) $pdo->lastInsertId();
 
-    // ===== GENERATE JWT TOKEN =====
     $tokenPayload = [
         'sub' => $userId,
         'email' => $email,
-        'name' => $fullName,
+        'name' => $name,
         'role' => 'user',
-        'category' => $category,
     ];
 
     $token = generateJwtToken($tokenPayload);
@@ -255,14 +163,12 @@ try {
         'refresh_token' => $refreshToken,
         'user' => [
             'id' => $userId,
-            'full_name' => $fullName,
-            'company_name' => $companyName ?: null,
+            'name' => $name,
             'email' => $email,
             'mobile' => $mobile,
             'category' => $category,
             'category_label' => getCategoryLabel($category),
-            'profile_photo' => getMediaUrl($profilePhoto),
-            'logo' => getMediaUrl($logo),
+            'sub_category' => $subCategory ?: null,
             'created_at' => date('Y-m-d H:i:s'),
         ],
     ]);
