@@ -117,14 +117,14 @@
                     <div class="code-block" style="margin-top:10px">
                         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                         <span class="c"># Key-Value pairs (all text type)</span><br>
-                        <span class="hl">full_name</span>: Rajesh Sharma<br>
+                        <span class="hl">name</span>: Rajesh Sharma<br>
                         <span class="hl">email</span>: rajesh@example.com<br>
                         <span class="hl">mobile</span>: 9876543210<br>
                         <span class="hl">password</span>: Secure@123<br>
                         <span class="hl">state</span>: Maharashtra<br>
                         <span class="hl">city</span>: Mumbai<br>
-                        <span class="hl">address</span>: 42, Marine Drive<br>
-                        <span class="hl">pincode</span>: 400001<br>
+                        <span class="hl">locality</span>: Andheri West<br>
+                        <span class="hl">whatsapp_number</span>: 9876543210<br>
                         <span class="hl">category</span>: agent_broker
                     </div>
                 </div>
@@ -146,18 +146,6 @@
             <div class="step-card">
                 <div class="step-num">5</div>
                 <div class="step-body">
-                    <div class="step-title">Upload files (optional)</div>
-                    <div class="step-text">
-                        Change the key type from <strong>Text</strong> to <strong>File</strong> for these fields:<br>
-                        <span class="inline-code">profile_photo</span> &rarr; select a JPEG/PNG file<br>
-                        <span class="inline-code">logo</span> &rarr; select a company logo image
-                    </div>
-                </div>
-            </div>
-
-            <div class="step-card">
-                <div class="step-num">6</div>
-                <div class="step-body">
                     <div class="step-title">Send and verify</div>
                     <div class="step-text">
                         Click <strong>Send</strong>. Expect a <span class="status-code s2xx">201 Created</span> response with:
@@ -171,12 +159,12 @@
             </div>
 
             <div class="step-card">
-                <div class="step-num">7</div>
+                <div class="step-num">6</div>
                 <div class="step-body">
                     <div class="step-title">Test error scenarios</div>
                     <div class="step-text">
                         <ul>
-                            <li><strong>Missing required fields:</strong> Send only <span class="inline-code">full_name</span> &rarr; expect <span class="status-code s4xx">422</span> with validation errors array</li>
+                            <li><strong>Missing required fields:</strong> Send only <span class="inline-code">name</span> &rarr; expect <span class="status-code s4xx">422</span> with validation errors array</li>
                             <li><strong>Duplicate email:</strong> Register again with same email &rarr; expect <span class="status-code s4xx">409</span></li>
                             <li><strong>Weak password:</strong> Use <span class="inline-code">"password": "123"</span> &rarr; expect <span class="status-code s4xx">422</span></li>
                             <li><strong>Invalid mobile:</strong> Use <span class="inline-code">"mobile": "12345"</span> &rarr; expect <span class="status-code s4xx">422</span></li>
@@ -273,7 +261,7 @@
                         <ul style="margin-top:4px">
                             <li><span class="inline-code">status: true</span></li>
                             <li>A JWT <span class="inline-code">token</span></li>
-                            <li>Complete <span class="inline-code">user</span> profile including <span class="inline-code">extra_fields</span> with category-specific data</li>
+                            <li>Complete <span class="inline-code">user</span> profile with account details</li>
                         </ul>
                     </div>
                 </div>

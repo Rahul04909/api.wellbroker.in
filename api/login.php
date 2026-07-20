@@ -51,10 +51,8 @@ try {
     $pdo = getDbConnection();
 
     $stmt = $pdo->prepare(
-        "SELECT id, full_name, company_name, mobile, email, password, category, sub_category,
-                profile_photo, logo, experience, about_business, service_areas,
-                website, whatsapp_number, extra_fields, state, city, address, pincode,
-                mobile_verified, email_verified, status, created_at
+        "SELECT id, name, email, mobile, password, state, city, locality, whatsapp_number,
+                category, sub_category, mobile_verified, email_verified, status, created_at
          FROM users
          WHERE {$field} = :loginId
          LIMIT 1"
@@ -74,23 +72,10 @@ try {
         sendResponse(401, false, 'Invalid credentials');
     }
 
-    // Decode JSON fields
-    $serviceAreas = null;
-    if (!empty($user['service_areas'])) {
-        $decoded = json_decode($user['service_areas'], true);
-        $serviceAreas = $decoded !== null ? $decoded : null;
-    }
-
-    $extraFields = null;
-    if (!empty($user['extra_fields'])) {
-        $decoded = json_decode($user['extra_fields'], true);
-        $extraFields = $decoded !== null ? $decoded : null;
-    }
-
     $tokenPayload = [
         'sub' => (int) $user['id'],
         'email' => $user['email'],
-        'name' => $user['full_name'],
+        'name' => $user['name'],
         'role' => 'user',
         'category' => $user['category'],
     ];
@@ -105,25 +90,16 @@ try {
         'refresh_token' => $refreshToken,
         'user' => [
             'id' => (int) $user['id'],
-            'full_name' => $user['full_name'],
-            'company_name' => $user['company_name'],
+            'name' => $user['name'],
             'email' => $user['email'],
             'mobile' => $user['mobile'],
+            'state' => $user['state'],
+            'city' => $user['city'],
+            'locality' => $user['locality'],
+            'whatsapp_number' => $user['whatsapp_number'],
             'category' => $user['category'],
             'category_label' => getCategoryLabel($user['category']),
             'sub_category' => $user['sub_category'],
-            'profile_photo' => getMediaUrl($user['profile_photo']),
-            'logo' => getMediaUrl($user['logo']),
-            'experience' => $user['experience'],
-            'about_business' => $user['about_business'],
-            'service_areas' => $serviceAreas,
-            'website' => $user['website'],
-            'whatsapp_number' => $user['whatsapp_number'],
-            'state' => $user['state'],
-            'city' => $user['city'],
-            'address' => $user['address'],
-            'pincode' => $user['pincode'],
-            'extra_fields' => $extraFields,
             'mobile_verified' => (bool) $user['mobile_verified'],
             'email_verified' => (bool) $user['email_verified'],
             'created_at' => $user['created_at'],

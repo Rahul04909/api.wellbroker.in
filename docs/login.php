@@ -71,25 +71,16 @@
                         <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
                         <tbody>
                             <tr><td><span class="param-name">id</span></td><td><span class="param-type">integer</span></td><td><span class="param-desc">Unique user identifier</span></td></tr>
-                            <tr><td><span class="param-name">full_name</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Full name</span></td></tr>
-                            <tr><td><span class="param-name">company_name</span></td><td><span class="param-type">string|null</span></td><td><span class="param-desc">Company or firm name</span></td></tr>
+                            <tr><td><span class="param-name">name</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Full name</span></td></tr>
                             <tr><td><span class="param-name">email</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Email address</span></td></tr>
                             <tr><td><span class="param-name">mobile</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Mobile number</span></td></tr>
+                            <tr><td><span class="param-name">state</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">State</span></td></tr>
+                            <tr><td><span class="param-name">city</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">City</span></td></tr>
+                            <tr><td><span class="param-name">locality</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Locality or area</span></td></tr>
+                            <tr><td><span class="param-name">whatsapp_number</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">WhatsApp number</span></td></tr>
                             <tr><td><span class="param-name">category</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">User category slug</span></td></tr>
                             <tr><td><span class="param-name">category_label</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Human-readable category name</span></td></tr>
                             <tr><td><span class="param-name">sub_category</span></td><td><span class="param-type">string|null</span></td><td><span class="param-desc">Sub-category</span></td></tr>
-                            <tr><td><span class="param-name">profile_photo</span></td><td><span class="param-type">string|null</span></td><td><span class="param-desc">Profile photo URL</span></td></tr>
-                            <tr><td><span class="param-name">logo</span></td><td><span class="param-type">string|null</span></td><td><span class="param-desc">Company logo URL</span></td></tr>
-                            <tr><td><span class="param-name">experience</span></td><td><span class="param-type">string|null</span></td><td><span class="param-desc">Experience details</span></td></tr>
-                            <tr><td><span class="param-name">about_business</span></td><td><span class="param-type">string|null</span></td><td><span class="param-desc">Business description</span></td></tr>
-                            <tr><td><span class="param-name">service_areas</span></td><td><span class="param-type">array|null</span></td><td><span class="param-desc">Service areas list</span></td></tr>
-                            <tr><td><span class="param-name">website</span></td><td><span class="param-type">string|null</span></td><td><span class="param-desc">Website URL</span></td></tr>
-                            <tr><td><span class="param-name">whatsapp_number</span></td><td><span class="param-type">string|null</span></td><td><span class="param-desc">WhatsApp number</span></td></tr>
-                            <tr><td><span class="param-name">state</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">State</span></td></tr>
-                            <tr><td><span class="param-name">city</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">City</span></td></tr>
-                            <tr><td><span class="param-name">address</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Address</span></td></tr>
-                            <tr><td><span class="param-name">pincode</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Pincode</span></td></tr>
-                            <tr><td><span class="param-name">extra_fields</span></td><td><span class="param-type">object|null</span></td><td><span class="param-desc">Category-specific fields as JSON object</span></td></tr>
                             <tr><td><span class="param-name">mobile_verified</span></td><td><span class="param-type">boolean</span></td><td><span class="param-desc">Mobile verification status</span></td></tr>
                             <tr><td><span class="param-name">email_verified</span></td><td><span class="param-type">boolean</span></td><td><span class="param-desc">Email verification status</span></td></tr>
                             <tr><td><span class="param-name">created_at</span></td><td><span class="param-type">string</span></td><td><span class="param-desc">Account creation timestamp</span></td></tr>
@@ -128,11 +119,18 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"refresh_token"</span>: <span class="s">"a1b2c3d4e5f6..."</span>,<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"user"</span>: {<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"id"</span>: <span class="n">1</span>,<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"full_name"</span>: <span class="s">"Rajesh Sharma"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"name"</span>: <span class="s">"Rajesh Sharma"</span>,<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"email"</span>: <span class="s">"rajesh@example.com"</span>,<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"mobile"</span>: <span class="s">"9876543210"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"state"</span>: <span class="s">"Maharashtra"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"city"</span>: <span class="s">"Mumbai"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"locality"</span>: <span class="s">"Andheri West"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"whatsapp_number"</span>: <span class="s">"9876543210"</span>,<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"category"</span>: <span class="s">"agent_broker"</span>,<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"profile_photo"</span>: <span class="s">"https://api.wellbroker.in/uploads/profiles/abc.jpg"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"category_label"</span>: <span class="s">"Agents / Brokers"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"sub_category"</span>: <span class="s">"Residential"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"mobile_verified"</span>: <span class="k">false</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"email_verified"</span>: <span class="k">false</span>,<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"created_at"</span>: <span class="s">"2026-07-12 21:30:00"</span><br>
                     &nbsp;&nbsp;&nbsp;&nbsp;}<br>
                     &nbsp;&nbsp;}<br>
